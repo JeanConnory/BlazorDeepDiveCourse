@@ -6,58 +6,28 @@
 <br />
 <br />
 
-<div class="container-fluid text-center">
-    <div class="row w-50">
-        @foreach (var city in cities)
-        {
-            <div class="col">
-                <div class="card @(selectedCity.Equals(city, StringComparison.OrdinalIgnoreCase)?"border-primary":"")">
-                    <img src="@($"/images/{city}.png")" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <button type="button" class="btn btn-primary" @onclick="@(() => { SelectCity(city); })">@city</button>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>
+<CityListComponent SelectCityCallback="HandleCitySelection"></CityListComponent>
+
 <br />
 
 <div class="input-group mb-3">
     <input type="text" class="form-control" placeholder="Search Servers" @bind-value="serverFilter" @bind-value:event="oninput" />
     <button class="btn btn-outline-secondary" type="button" id="button-search" @onclick="HandleSearch">Search</button>
 </div>
-
 <br />
-<ul>
-    @foreach (var server in servers)
-    {
-        <li>
-            @server.Name in @server.City is <span style="color:@(server.IsOnline ? "green" : "red")">
-                @(server.IsOnline ? "Online" : "Offline")
-            </span>
-            &nbsp;
-            <a href="/servers/@server.ServerId" class="btn btn-link">Edit</a>
-            &nbsp;
-            <EditForm Model="server" FormName="@($"form-server-{server.ServerId}")"
-                      OnValidSubmit="@(() => { DeleteServer(server.ServerId); })">
-                <button type="submit" class="btn btn-primary">Delete</button>
-            </EditForm>
-        </li>
-    }
-</ul>
+
+<ServerListComponent @rendermode="InteractiveServer" CityName="@this.selectedCity"></ServerListComponent>
+<br />
 
 <p>
     <a href="/servers/add" class="btn btn-primary">Add Server</a>
 </p>
 
 @code {
+    private string selectedCity = "Toronto";
 
-    private List<Server> servers = ServersRepository.GetServersByCity("Toronto");
 
     private List<string> cities = CitiesRepository.GetCities();
-
-    private string selectedCity = "Toronto";
 
     private string _serverFilter = "";
     private string serverFilter
@@ -66,30 +36,19 @@
         set
         {
             _serverFilter = value;
-            this.servers = ServersRepository.SearchServers(_serverFilter);
+            //this.servers = ServersRepository.SearchServers(_serverFilter);
         }
-    }
-
-    private void DeleteServer(int serverId)
-    {
-        if (serverId > 0)
-        {
-            ServersRepository.DeleteServer(serverId);
-            NavigationManager.Refresh();
-        }
-    }
-
-    private void SelectCity(string cityName)
-    {
-        this.selectedCity = cityName;
-
-        this.servers = ServersRepository.GetServersByCity(this.selectedCity);
     }
 
     private void HandleSearch()
     {
-        this.servers = ServersRepository.SearchServers(serverFilter);
+        //this.servers = ServersRepository.SearchServers(serverFilter);
 
-        this.selectedCity = string.Empty;
+        //this.selectedCity = string.Empty;
+    }
+
+    private void HandleCitySelection(string cityName)
+    {
+        selectedCity = cityName;
     }
 }
