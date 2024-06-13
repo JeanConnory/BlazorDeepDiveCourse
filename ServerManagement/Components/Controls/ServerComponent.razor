@@ -1,19 +1,62 @@
-﻿@if (server != null)
+﻿@inject NavigationManager NavigationManager
+
+@if (Server != null)
 {
-    <div data-name="@server.Name" data-status="Server is @(server.IsOnline ? "Online" : "Offline")" style="@($"color:{(server.IsOnline ? "green" : "red")}")">
-        @server.Name is in @server.City that is @(server.IsOnline ? "Online" : "Offline")
+    <li @key="Server.ServerId">
+        @Server.Name in @Server.City is <span style="color:@(Server.IsOnline ? "green" : "red")">
+            @(Server.IsOnline ? "Online" : "Offline")
+        </span>
         &nbsp;
-        <button type="button" class="btn btn-primary" @onclick="ChangeStatus">Turn On/Off</button>
-    </div>
+
+        @if (Server.IsOnline)
+        {
+            <button type="button" class="btn btn-outline-danger"
+            @onclick="@(() => { Server.IsOnline = false; })">
+                Turn Off
+            </button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-outline-success"
+                    @onclick="@(() => { Server.IsOnline = true; })">
+                Turn On
+            </button>
+        }
+        &nbsp;
+
+        @if(Server.IsOnline)
+        {
+            Random random = new Random();
+            int randomNumber = random.Next(0, 500);
+            <text>@randomNumber</text>
+        }
+        else
+        {
+            <text>N/A</text>
+        }
+
+        &nbsp;
+        <a href="/Servers/@Server.ServerId" class="btn btn-link">Edit</a>
+        &nbsp;
+        <EditForm Model="Server" FormName="@($"form-Server-{Server.ServerId}")"
+                  OnValidSubmit="@(() => { DeleteServer(Server.ServerId); })">
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </EditForm>
+    </li>
 }
 
 @code {
 
-    private Server? server { get; set; } = new Server { Name = "Server 1", City = "Toronto" };
+    [Parameter]
+    public Server? Server { get; set; }
 
-    private void ChangeStatus()
+    private void DeleteServer(int serverId)
     {
-        if (server != null)
-            this.server.IsOnline = !this.server.IsOnline;
+        if (serverId > 0)
+        {
+            ServersRepository.DeleteServer(serverId);
+            //NavigationManager.Refresh();
+            NavigationManager.NavigateTo("/servers", true);
+        }
     }
 }

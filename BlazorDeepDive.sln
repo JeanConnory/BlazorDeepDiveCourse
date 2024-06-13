@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerManagement", "ServerManagement\ServerManagement.csproj", "{8A4701AC-7F4D-47CE-8E88-8A5D93E68E8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoApp", "ToDoApp\ToDoApp.csproj", "{33DB17B9-1EF3-483B-AEBE-0582352A6301}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoApp", "ToDoApp\ToDoApp.csproj", "{33DB17B9-1EF3-483B-AEBE-0582352A6301}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
