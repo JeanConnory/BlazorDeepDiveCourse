@@ -1,11 +1,48 @@
-﻿@if (this.servers != null && this.servers.Count > 0)
+﻿@* @if (this.servers != null && this.servers.Count > 0)
 {
-    <ul>
+    <ul style="list-unstyled">
         <Virtualize Items="this.servers" Context="server">
            <ServerComponent Server="server"></ServerComponent>
         </Virtualize>
     </ul>
 }
+ *@
+
+@* <ul style="list-unstyled">
+<RepeaterComponent Items="this.servers">
+    <Row Context="server">
+        <ServerComponent Server="server"></ServerComponent>
+    </Row>
+</RepeaterComponent>
+</ul> *@
+
+<table class="table table-striped">
+    <RepeaterComponent Items="servers">
+        <Header>
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    People Online
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        </Header>
+        <Row Context="server">
+            <ServerComponent Server="server"></ServerComponent>
+        </Row>
+    </RepeaterComponent>
+</table>
 
 @code {
     [Parameter]
