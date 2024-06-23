@@ -1,4 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
+@inject IServerEFCoreRepository ServersEFCoreRepository
 
 @if (Server != null)
 {
@@ -64,7 +65,7 @@
     {
         if (serverId > 0)
         {
-            ServersRepository.DeleteServer(serverId);
+            ServersEFCoreRepository.DeleteServer(serverId);
             //NavigationManager.Refresh();
             NavigationManager.NavigateTo("/servers", true);
         }

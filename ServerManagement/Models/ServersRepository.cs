@@ -1,6 +1,6 @@
 ﻿namespace ServerManagement.Models;
 
-public static class ServersRepository
+public static class ServersEFCoreRepository
 {
     private static List<Server> servers = new List<Server>()
         {
